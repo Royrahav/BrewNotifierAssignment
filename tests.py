@@ -9,6 +9,16 @@ apple_company = ent.Company(link="link", name="Apple", employees_min=50, employe
 comiccon_event = ent.Event(link="link", name="Comic-con", start_date=custom_date_time)
 webinar_ent = ent.Webinar(link="link", name="Webinar of All Webinars", start_date=custom_date_time)
 
+'''
+Each tests test these specific scenarios:
+New Object
+Deleted Object
+Object with no change
+Object that its' is_deleted has been changed
+Object that its' is_blacklisted has been changed
+Object that its' crawling_status has been changed
+'''
+
 
 def test(entity, entity_name, functionality, expect, notify_on):
     print("-----------------------------------")
@@ -34,9 +44,12 @@ def print_astrix(text):
 
 
 def test_company():
-    ''' Test Company: Constructor: self, *, link, name, crawling_status=CRAWLING_STATUSES.NOT_CRAWLED,
+    """
+    Test Company: Constructor: self, *, link, name, crawling_status=CRAWLING_STATUSES.NOT_CRAWLED,
     is_deleted=False, is_blacklisted=False, last_crawled=None, employees_min, employees_max
-    '''
+
+    Tests two objects of Microsoft company objects
+    """
     print_astrix("Now testing Company")
     company1 = ent.Company(link="link", name="Microsoft", employees_min=50, employees_max=100)
     company2 = ent.Company(link="link", name="Microsoft", employees_min=50, employees_max=100)
@@ -80,10 +93,13 @@ def test_company():
 
 
 def test_event():
-    ''' Test event: Constructor: self, *, link, name, crawling_status=CRAWLING_STATUSES.NOT_CRAWLED,
+    """
+    Test event: Constructor: self, *, link, name, crawling_status=CRAWLING_STATUSES.NOT_CRAWLED,
     is_deleted=False, is_blacklisted=False, last_crawled=None, start_date, description=None, location=None,
     end_date=None, **kwargs
-    '''
+
+    Tests two Hackathon event objects
+    """
     print_astrix("Now testing Event")
     event1 = ent.Event(link="link", name="Hackathon", start_date=custom_date_time)
     event2 = ent.Event(link="link", name="Hackathon", start_date=custom_date_time)
@@ -127,9 +143,12 @@ def test_event():
 
 
 def test_webinar():
-    ''' Test test_webinar: Constructor: self, *, link, name, crawling_status=CRAWLING_STATUSES.NOT_CRAWLED,
+    """
+    Test test_webinar: Constructor: self, *, link, name, crawling_status=CRAWLING_STATUSES.NOT_CRAWLED,
     is_deleted=False, is_blacklisted=False, last_crawled=None, start_date, description=None, language="en", **kwargs
-    '''
+
+    Tests two webinar objects called "Webinar World"
+    """
     print_astrix("Now testing Webinar")
     webinar1 = ent.Webinar(link="link", name="Webinar World", start_date=custom_date_time)
     webinar2 = ent.Webinar(link="link", name="Webinar World", start_date=custom_date_time)
@@ -173,9 +192,12 @@ def test_webinar():
 
 
 def test_content_item():
-    ''' Test test_content_item: Constructor: self, *, link, name, crawling_status=CRAWLING_STATUSES.NOT_CRAWLED,
+    """
+    Test test_content_item: Constructor: self, *, link, name, crawling_status=CRAWLING_STATUSES.NOT_CRAWLED,
     is_deleted=False, is_blacklisted=False, last_crawled=None, company, snippet=None, **kwargs
-    '''
+
+    Tests two Content Item objects, of Google company
+    """
     print_astrix("Now testing Content Item")
     content_item1 = ent.ContentItem(link="link", name="Google's Content", company=google_company)
     content_item2 = ent.ContentItem(link="link", name="Google's Content", company=google_company)
@@ -221,8 +243,11 @@ def test_content_item():
 
 
 def test_company_for_event():
-    ''' Test test_company_for_event: Constructor: event, company, is_deleted=False, is_blacklisted=False
-    '''
+    """
+    Test test_company_for_event: Constructor: event, company, is_deleted=False, is_blacklisted=False
+
+    Tests two CompanyForEvent objects, if event called: Comic-Con
+    """
     print_astrix("Now testing Company For Event")
     company_for_event1 = ent.CompanyForEvent(company=google_company,
                                              event=comiccon_event)
@@ -263,7 +288,7 @@ def test_company_for_event():
     company_for_event2.crawling_status = ent.CRAWLING_STATUSES.TEXT_ANALYZED
     test(company_for_event_notifier_obj, "Comic-con", "update crawling "
                                                       "_status to TEXT_ANALYZED", "Empty result (no "
-                                                                                                 "notify)",
+                                                                                  "notify)",
          "Event's name")
     company_for_event2.crawling_status = ent.CRAWLING_STATUSES.NOT_CRAWLED
 
@@ -276,8 +301,11 @@ def test_company_for_event():
 
 
 def test_company_competitor():
-    ''' Test test_company_competitor: Constructor: company, competitor, is_deleted=False
-    '''
+    """
+    Test test_company_competitor: Constructor: company, competitor, is_deleted=False
+
+    Tests two CompanyCompetitor objects, Google vs Apple
+    """
     print_astrix("Now testing Company Competitor")
     company_competitor1 = ent.CompanyCompetitor(competitor=apple_company,
                                                 company=google_company)
@@ -331,48 +359,57 @@ def test_company_competitor():
 
 
 def test_company_for_webinar():
-    ''' Test test_company_for_webinar: Constructor: webinar, company, is_deleted=False, is_blacklisted=False
-    '''
+    """
+    Test test_company_for_webinar: Constructor: webinar, company, is_deleted=False, is_blacklisted=False
+
+    Tests two CompanyForWebinar objects, for a webinar called "Webinar of All Webinars"
+    """
     print_astrix("Now testing Company For Webinar")
     company_for_webinar1 = ent.CompanyForWebinar(webinar=webinar_ent,
                                                  company=google_company)
     company_for_webinar2 = ent.CompanyForWebinar(webinar=webinar_ent,
                                                  company=google_company)
     company_for_webinar_notifier_new_obj = noti.CompanyForWebinarNotifier(entity_obj=company_for_webinar1,
-                                                                         original_entity_obj=None,
-                                                                         entity_type="CompanyForWebinar")
+                                                                          original_entity_obj=None,
+                                                                          entity_type="CompanyForWebinar")
     company_for_webinar_notifier_deleted_obj = noti.CompanyForWebinarNotifier(entity_obj=None,
-                                                                             original_entity_obj=company_for_webinar2,
-                                                                             entity_type="CompanyForWebinar")
+                                                                              original_entity_obj=company_for_webinar2,
+                                                                              entity_type="CompanyForWebinar")
     company_for_webinar_notifier_obj = noti.CompanyForWebinarNotifier(entity_obj=company_for_webinar1,
-                                                                     original_entity_obj=company_for_webinar2,
-                                                                     entity_type="CompanyForWebinar")
+                                                                      original_entity_obj=company_for_webinar2,
+                                                                      entity_type="CompanyForWebinar")
 
     # Test new object notify
-    test(company_for_webinar_notifier_new_obj, "Webinar of All Webinars", "new object", "To notify on", "Webinar's name")
+    test(company_for_webinar_notifier_new_obj, "Webinar of All Webinars", "new object", "To notify on",
+         "Webinar's name")
 
     # Test deleted object notify
-    test(company_for_webinar_notifier_deleted_obj, "Webinar of All Webinars", "deleted object", "To notify on", "Weninar's name")
+    test(company_for_webinar_notifier_deleted_obj, "Webinar of All Webinars", "deleted object", "To notify on",
+         "Weninar's name")
 
     # Test no change in object
-    test(company_for_webinar_notifier_obj, "Webinar of All Webinars", "no change in object", "Empty result (no notify)", "Weninar's name")
+    test(company_for_webinar_notifier_obj, "Webinar of All Webinars", "no change in object", "Empty result (no notify)",
+         "Weninar's name")
 
     # Test is_deleted object notify
     company_for_webinar2.is_deleted = True
-    test(company_for_webinar_notifier_obj, "Webinar of All Webinars", "update is_deleted", "To notify on", "Weninar's name")
+    test(company_for_webinar_notifier_obj, "Webinar of All Webinars", "update is_deleted", "To notify on",
+         "Weninar's name")
     company_for_webinar2.is_deleted = False
 
     # Test change crawl status object notify TEXT_UPLOADED
     company_for_webinar2.crawling_status = ent.CRAWLING_STATUSES.TEXT_UPLOADED
-    test(company_for_webinar_notifier_obj, "Webinar of All Webinars", "update crawling_status to TEXT_UPLOADED", "Empty result (no "
-                                                                                               "notify)",
+    test(company_for_webinar_notifier_obj, "Webinar of All Webinars", "update crawling_status to TEXT_UPLOADED",
+         "Empty result (no "
+         "notify)",
          "Weninar's name")
     company_for_webinar2.crawling_status = ent.CRAWLING_STATUSES.NOT_CRAWLED
 
     # Test change crawl status object notify TEXT_ANALYZED
     company_for_webinar2.crawling_status = ent.CRAWLING_STATUSES.TEXT_ANALYZED
-    test(company_for_webinar_notifier_obj, "Webinar of All Webinars", "update crawling_status to TEXT_ANALYZED", "Empty result (no "
-                                                                                               "notify)",
+    test(company_for_webinar_notifier_obj, "Webinar of All Webinars", "update crawling_status to TEXT_ANALYZED",
+         "Empty result (no "
+         "notify)",
          "Weninar's name")
     company_for_webinar2.crawling_status = ent.CRAWLING_STATUSES.NOT_CRAWLED
 
@@ -385,6 +422,7 @@ def test_company_for_webinar():
     print("\n\n\n")
 
 
+# All tests calls
 test_company()
 test_event()
 test_webinar()

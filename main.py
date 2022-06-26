@@ -13,7 +13,7 @@ webinar_ent = ent.Webinar(link="link", name="Webinar of All Webinars", start_dat
 def test(entity, entity_name, functionality, expect, notify_on):
     print("-----------------------------------")
     print(f"We test entity: {entity.entity_type}")
-    print(f"Entity's name: {entity_name}")
+    print(f"Notified entity's name: {entity_name}")
     print(f"Checking functionality: {functionality}")
     print(f"We expect that: {expect}")
     print(f"Should notify on: {notify_on}")

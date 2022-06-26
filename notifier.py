@@ -24,9 +24,16 @@ class Notifier:
         return False
 
     def check_if_blacklisted(self):
+        if self.entity_obj.is_blacklisted != self.original_entity_obj.is_blacklisted:
+            return True
         return False
 
     def check_crawling_status(self):
+        if self.original_entity_obj.crawling_status != self.entity_obj.crawling_status \
+                and (
+                self.original_entity_obj.crawling_status == ent.CRAWLING_STATUSES.TEXT_ANALYZED or
+                self.original_entity_obj.crawling_status == ent.CRAWLING_STATUSES.TEXT_UPLOADED):
+            return True
         return False
 
     def set_notify_entity(self):
@@ -57,12 +64,7 @@ class CompanyNotifier(Notifier):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-    def check_crawling_status(self):
-        if self.original_entity_obj.crawling_status != self.entity_obj.crawling_status \
-                and (
-                self.original_entity_obj.crawling_status == ent.CRAWLING_STATUSES.TEXT_ANALYZED or
-                self.original_entity_obj.crawling_status == ent.CRAWLING_STATUSES.TEXT_UPLOADED):
-            return True
+    def check_if_blacklisted(self):
         return False
 
 
@@ -70,56 +72,17 @@ class EventNotifier(Notifier):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-    def check_if_blacklisted(self):
-        if self.entity_obj.is_blacklisted != self.original_entity_obj.is_blacklisted:
-            return True
-        return False
-
-    def check_crawling_status(self):
-        if self.original_entity_obj.crawling_status != self.entity_obj.crawling_status \
-                and (
-                self.original_entity_obj.crawling_status == ent.CRAWLING_STATUSES.TEXT_ANALYZED or
-                self.original_entity_obj.crawling_status == ent.CRAWLING_STATUSES.TEXT_UPLOADED):
-            return True
-        return False
-
 
 class WebinarNotifier(Notifier):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-    def check_if_blacklisted(self):
-        if self.entity_obj.is_blacklisted != self.original_entity_obj.is_blacklisted:
-            return True
-        return False
-
-    def check_crawling_status(self):
-        if self.original_entity_obj.crawling_status != self.entity_obj.crawling_status \
-                and (
-                self.original_entity_obj.crawling_status == ent.CRAWLING_STATUSES.TEXT_ANALYZED or
-                self.original_entity_obj.crawling_status == ent.CRAWLING_STATUSES.TEXT_UPLOADED):
-            return True
-        return False
-
 
 class ContentItemNotifier(Notifier):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-
-    def check_if_blacklisted(self):
-        if self.entity_obj.is_blacklisted != self.original_entity_obj.is_blacklisted:
-            return True
-        return False
-
-    def check_crawling_status(self):
-        if self.original_entity_obj.crawling_status != self.entity_obj.crawling_status \
-                and (
-                self.original_entity_obj.crawling_status == ent.CRAWLING_STATUSES.TEXT_ANALYZED or
-                self.original_entity_obj.crawling_status == ent.CRAWLING_STATUSES.TEXT_UPLOADED):
-            return True
-        return False
 
     def set_notify_entity(self):
         if self.entity_obj is not None:
@@ -133,16 +96,14 @@ class CompanyForEventNotifier(Notifier):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-    def check_if_blacklisted(self):
-        if self.entity_obj.is_blacklisted != self.original_entity_obj.is_blacklisted:
-            return True
-        return False
-
     def set_notify_entity(self):
         if self.entity_obj is not None:
             self.notified_entity_name = self.entity_obj.event.name
         else:
             self.notified_entity_name = self.original_entity_obj.event.name
+
+    def check_crawling_status(self):
+        return False
 
 
 class CompanyCompetitorNotifier(Notifier):
@@ -156,19 +117,23 @@ class CompanyCompetitorNotifier(Notifier):
         else:
             self.notified_entity_name = self.original_entity_obj.company.name
 
+    def check_crawling_status(self):
+        return False
+
+    def check_if_blacklisted(self):
+        return False
+
 
 class CompanyForWebinarNotifier(Notifier):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-    def check_if_blacklisted(self):
-        if self.entity_obj.is_blacklisted != self.original_entity_obj.is_blacklisted:
-            return True
-        return False
-
     def set_notify_entity(self):
         if self.entity_obj is not None:
             self.notified_entity_name = self.entity_obj.webinar.name
         else:
             self.notified_entity_name = self.original_entity_obj.webinar.name
+
+    def check_crawling_status(self):
+        return False

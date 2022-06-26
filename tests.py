@@ -261,7 +261,8 @@ def test_company_for_event():
 
     # Test change crawl status object notify TEXT_ANALYZED
     company_for_event2.crawling_status = ent.CRAWLING_STATUSES.TEXT_ANALYZED
-    test(company_for_event_notifier_obj, "Comic-con", "update crawling_status to TEXT_ANALYZED", "Empty result (no "
+    test(company_for_event_notifier_obj, "Comic-con", "update crawling "
+                                                      "_status to TEXT_ANALYZED", "Empty result (no "
                                                                                                  "notify)",
          "Event's name")
     company_for_event2.crawling_status = ent.CRAWLING_STATUSES.NOT_CRAWLED
